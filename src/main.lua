@@ -86,6 +86,9 @@ function module.new()
 				start_time = nil
 			end
 		end
+		self.Sprint = function(state:Enum.UserInputState)
+			sprint(nil, state)
+		end
 		self.Sprinted:Connect(function(start_time)
 			local char = plr.Character
 			if char then
