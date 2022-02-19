@@ -80,7 +80,7 @@ function module.new()
 				if start_time then
 					unsprinted:Fire(tick(),tick() - start_time)
 				else
-					unsprinted:Fire(tick(),nil)
+					unsprinted:Fire(tick(),0)
 				end
 
 				start_time = nil
