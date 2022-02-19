@@ -10,7 +10,7 @@ local data = {}
 local UIS = game:GetService("UserInputService")
 local TS = game:GetService("TweenService")
 local CAS = game:GetService("ContextActionService")
-local function scale_stuff(CurrentCamera)
+local function scale_button(CurrentCamera, name:string)
 	local MinAxis = math.min(CurrentCamera.ViewportSize.X, CurrentCamera.ViewportSize.Y)
 	local IsSmallScreen = MinAxis <= 500
 	local ActionButtonSize = IsSmallScreen and 70 or 120
@@ -28,8 +28,8 @@ local function scale_stuff(CurrentCamera)
 			end
 			ActionButton.Size = UDim2.fromOffset(ActionButtonSize, ActionButtonSize)
 		end
-end
-
+	end
+	RescaleActionButton(name)
 end
 function module.new()
 	if game:GetService("RunService"):IsClient() then
@@ -38,7 +38,7 @@ function module.new()
 		local start_time = nil
 		self.phone_button_offset = 45 -- the offset of the default mobile button on phones
 		self.tablet_button_offset = 2.45 -- the offset of the default mobile button on tablets
-		self.mobile_button_icon = "rbxassetid://2743790514" -- the icon for the default mobile button
+		self.mobile_button_icon = "rbxassetid://1921587812" -- the icon for the default mobile button
 		local sprinted = Instance.new("BindableEvent")
 		local unsprinted = Instance.new("BindableEvent")
 		self.camera = workspace.CurrentCamera
@@ -120,14 +120,14 @@ function module.new()
 				local MinAxis = math.min(CurrentCamera.ViewportSize.X, CurrentCamera.ViewportSize.Y)
 				local IsSmallScreen = MinAxis <= 500
 				local ActionButtonSize = IsSmallScreen and 70 or 120
-				CAS:BindActionAtPriority("sprint-action", sprint, true, 10000, unpack(self.valid_keys))
-				scale_stuff(CurrentCamera)
-				CAS:SetPosition("sprint-action", IsSmallScreen and UDim2.new(1, -(ActionButtonSize * 2.52), 1, -ActionButtonSize - self.phone_button_offset) or
+				CAS:BindActionAtPriority(id, sprint, true, 10000, unpack(self.valid_keys))
+				CAS:SetPosition(id, IsSmallScreen and UDim2.new(1, -(ActionButtonSize * 2.52), 1, -ActionButtonSize - self.phone_button_offset) or
 					UDim2.new(1, -(ActionButtonSize * 2.52 - 10), 1, -ActionButtonSize  * self.tablet_button_offset))
+				scale_button(CurrentCamera, id)
 				if self.mobile_button_title then
-					CAS:SetTitle("sprint-action", self.mobile_button_title)
+					CAS:SetTitle(id, self.mobile_button_title)
 				else
-					CAS:SetImage("sprint-action", self.mobile_button_icon)
+					CAS:SetImage(id, self.mobile_button_icon)
 				end	
 			elseif self.uses_default_ui == false and self.sprint_ui ~= nil then
 				local ui:TextButton | ImageButton = self.sprint_ui
